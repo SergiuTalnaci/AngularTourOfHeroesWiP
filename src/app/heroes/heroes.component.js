@@ -9,21 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
 var hero_service_1 = require("../Services/hero.service");
 var HeroesComponent = (function () {
-    //heroService = new HeroService(); Never ever fucking do this, if you do this you are worse than KMD, use injection instead
-    function HeroesComponent(heroService) {
+    function HeroesComponent(router, heroService) {
+        this.router = router;
         this.heroService = heroService;
-    } //Injection way: https://angular.io/docs/ts/latest/guide/dependency-injection.html
-    HeroesComponent.prototype.ngOnInit = function () {
-        this.getHeroes();
-    };
+    }
     HeroesComponent.prototype.getHeroes = function () {
         var _this = this;
         this.heroService.getHeroes().then(function (heroes) { return _this.heroes = heroes; });
     };
+    HeroesComponent.prototype.ngOnInit = function () {
+        this.getHeroes();
+    };
     HeroesComponent.prototype.onSelect = function (hero) {
         this.selectedHero = hero;
+    };
+    HeroesComponent.prototype.gotoDetail = function () {
+        this.router.navigate(['/detail', this.selectedHero.id]);
     };
     return HeroesComponent;
 }());
@@ -32,9 +36,10 @@ HeroesComponent = __decorate([
         selector: 'my-heroes',
         templateUrl: './heroes.component.html',
         styleUrls: ['./heroes.component.css'],
-        providers: [hero_service_1.HeroService] //Injection way: he providers array tells Angular to create a fresh instance of the HeroService when it creates an AppComponent
+        providers: [hero_service_1.HeroService] //Injection way: the providers array tells Angular to create a fresh instance of the HeroService when it creates an AppComponent
     }),
-    __metadata("design:paramtypes", [hero_service_1.HeroService])
+    __metadata("design:paramtypes", [router_1.Router,
+        hero_service_1.HeroService])
 ], HeroesComponent);
 exports.HeroesComponent = HeroesComponent;
 //# sourceMappingURL=heroes.component.js.map
